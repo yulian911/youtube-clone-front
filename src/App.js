@@ -7,9 +7,15 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Video from "./pages/Video";
 import SignIn from "./pages/SignIn";
+import Search from "./pages/Search";
+
 
 const Container = styled.div`
   display: flex;
+  /* width:100vw;
+  height:100vh;
+  background-color:red; */
+
   /* flex:1 */
 `;
 
@@ -34,11 +40,12 @@ function App() {
             <Wrapper>
               <Routes>
                 <Route path="/">
-                  <Route index element={<Home />} />
-                  <Route path="/trends" element={<Home  type={'trends'}/>} />
+                  <Route index element={<Home type="random" />} />
+                  <Route path="/trends" element={<Home  type={'trend'}/>} />
                   <Route path="/sub"element={<Home type={'subs'}/>} />
-                  <Route path="signin" element={<SignIn />} />
-                  <Route path="video">
+                  <Route path="/search"element={<Search/>} />
+                  <Route path="/signin" element={<SignIn />} />
+                  <Route path="/video">
                     <Route path=":id" element={<Video />} />
                   </Route>
                 </Route>
@@ -47,7 +54,7 @@ function App() {
           </Main>
         </BrowserRouter>
       </Container>
-    </ThemeProvider>
+     </ThemeProvider>
   );
 }
 

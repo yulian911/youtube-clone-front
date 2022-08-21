@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import {format} from "timeago.js";
+import { $host } from "../utils/axios";
+
 
 const Container = styled.div`
   width: ${(props) => props.type !== "sm" && "360px"};
@@ -51,23 +54,38 @@ const Info = styled.div`
   color: ${({ theme }) => theme.textSoft};
 `;
 
-const Card = ({ type }) => {
+const Card = ({ type ,imgUrl,title,views,createdAt,userId,_id}) => {
+
+  const [channel,setChannel]=useState([])
+
+  useEffect(() => {
+
+    const fetchData =async()=>{
+      const {data} =await $host.get(`/users/find/${userId}`)
+      setChannel(data)
+    }
+    fetchData()
+
+  }, [userId])
+
+
+  console.log(channel)
   return (
-    <Link to="/video/test" style={{ textDecoration: "none" }}>
+    <Link to={`/video/${_id}`} style={{ textDecoration: "none" }}>
       <Container type={type}>
         <Image
           type={type}
-          src="https://i9.ytimg.com/vi_webp/k3Vfj-e1Ma4/mqdefault.webp?v=6277c159&sqp=CIjm8JUG&rs=AOn4CLDeKmf_vlMC1q9RBEZu-XQApzm6sA"
+          src={imgUrl}
         />
         <Details type={type}>
           <ChannelImage
             type={type}
-            src="https://yt3.ggpht.com/yti/APfAmoE-Q0ZLJ4vk3vqmV4Kwp0sbrjxLyB8Q4ZgNsiRH=s88-c-k-c0x00ffffff-no-rj-mo"
+            src={channel.img}
           />
           <Texts>
-            <Title>Test Video</Title>
-            <ChannelName>Lama Dev</ChannelName>
-            <Info>660,908 views • 1 day ago</Info>
+            <Title>{title}</Title>
+            <ChannelName>{channel.name}</ChannelName>
+            <Info>{views} views • {format(createdAt)}</Info>
           </Texts>
         </Details>
       </Container>
